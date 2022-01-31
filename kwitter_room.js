@@ -1,8 +1,8 @@
 
-//ADD YOUR FIREBASE LINKS HERE
 var firebaseConfig = {
       apiKey: "AIzaSyDS3kiBihNVQFQzvh0PtJKWNpu8NO3T8Mw",
       authDomain: "kwitterapp-e97ad.firebaseapp.com",
+      databaseURL: "https://kwitterapp-e97ad-default-rtdb.firebaseio.com",
       projectId: "kwitterapp-e97ad",
       storageBucket: "kwitterapp-e97ad.appspot.com",
       messagingSenderId: "1052381450360",
@@ -10,11 +10,33 @@ var firebaseConfig = {
     };
     
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+   firebase.initializeApp(firebaseConfig);
 
 
+
+
+
+   room_name=localStorage.getItem("room_name");   
 user_name=localStorage.getItem("username");
 document.getElementById("username").innerHTML="Welcome"+user_name;
+
+
+function send()
+{
+msg=document.getElementById("message").value;
+firebase.database().ref(room_name).push({
+name:user_name, 
+
+message:msg,
+like:0
+});
+document.getElementById("message").value="";
+      
+
+}
+
+
+
 
 function addroom()
 {
@@ -26,6 +48,12 @@ firebase.database().ref("/").child(room_name).update({
 localStorage.setItem("room_name", room_name);
 window.location="kwitter_page.html";
 }
+
+
+
+
+
+
 
 
 function getData() {firebase.database().ref("/").on('value', function(snapshot) {document.getElementById("output").innerHTML = "";snapshot.forEach(function(childSnapshot) {childKey  = childSnapshot.key;
@@ -50,5 +78,15 @@ window.location="kwitter_page.html";
 
       
 }
+
+function logout()
+{
+
+localStorage.removeItem("user_name");
+localStorage.removeItem("room_name");
+window.location="index.html";
+
+}
+
 
 
